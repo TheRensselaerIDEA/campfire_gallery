@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <script src="https://d3js.org/d3.v2.min.js"></script>
-    <title>Hello World!</title>
+    <title>Global Flow</title>
     <!--
     <style type="text/css">
         body {
@@ -35,217 +35,115 @@
   </style>
 
   <body>
-    <svg width="0" height="0" viewBox="0 0 100 100" xmlns="http://w3.org/2000/svg">
+    
       <script src="https://d3js.org/d3.v2.min.js"></script>
       <script type="text/javascript">
-          var data = {
-        "matrix": [
-            [
-                57617,
-                98976,
-                892164,
-                7803,
-                102330,
-                60176,
-                17538,
-                10241,
-                36672,
-                180627
-            ],
-            [
-                223568,
-                7488808,
-                841048,
-                4471,
-                1082614,
-                14420,
-                1912,
-                2901,
-                36399,
-                5540
-            ],
-            [
-                196067,
-                486555,
-                3201085,
-                18606,
-                377389,
-                45012,
-                6176,
-                13310,
-                140486,
-                13298
-            ],
-            [
-                89923,
-                14395,
-                1333241,
-                2695228,
-                169897,
-                89519,
-                5744,
-                714,
-                11674,
-                4685
-            ],
-            [
-                157993,
-                362620,
-                607893,
-                6101,
-                1000899,
-                225217,
-                2676,
-                9622,
-                26145,
-                1789
-            ],
-            [
-                405904,
-                25491,
-                247708,
-                352,
-                356880,
-                5793838,
-                21856,
-                92272,
-                51340,
-                1158
-            ],
-            [
-                798428,
-                11722,
-                190226,
-                11426,
-                8262,
-                11326,
-                528183,
-                65909,
-                110613,
-                33202
-            ],
-            [
-                1058982,
-                23328,
-                450551,
-                1399,
-                247354,
-                231370,
-                257539,
-                842544,
-                204930,
-                9179
-            ],
-            [
-                7451,
-                36043,
-                102777,
-                67,
-                12718,
-                1394,
-                3461,
-                25921,
-                43058,
-                2357
-            ],
-            [
-                3420404,
-                21929,
-                393777,
-                895,
-                21160,
-                7351,
-                119033,
-                3535,
-                15365,
-                599576
-            ]
-        ],
-        "regions": [
-            "North America",
-            "Africa",
-            "Europe",
-            "Fmr Soviet Union",
-            "West Asia",
-            "South Asia",
-            "East Asia",
-            "South-East Asia",
-            "Oceania",
-            "Latin America"
-        ]
-    }
 
+    function draw_chord(data, countries){
+        //var m_1990 = data["matrix"][0]["1990"];
+        //var countries = data["regions"];
+        var width = 1920,
+          height = 1080,
+          innerRadius = Math.min(width, height) * .41,
+          outerRadius = height/2;
 
-    var m_1990 = data["matrix"];
-    var countries = data["regions"];
+        var fill =["#f39c12", "#8e44ad", "#2980b9", "#16a085", "#27ae60","#f1c40f","#e67e22","#e74c3c","#c0392b","#d35400"];
 
-    var width = 1920,
-      height = 1080,
-      innerRadius = Math.min(width, height) * .41,
-      outerRadius = height/2;
+        var svg = d3.select("body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", "translate(" + width / 2 + "," + height/2 + ")");
+          // var mySVG = document.getElementById("svg");
+          // mySVG.setAttribute("width",  window.innerWidth);
+          // mySVG.setAttribute("height", window.innerHeight);
 
-    var fill =["#f39c12", "#8e44ad", "#2980b9", "#16a085", "#27ae60","#f1c40f","#e67e22","#e74c3c","#c0392b","#d35400"];
+        var chord = d3.layout.chord()
+                .padding(.05)
+                .matrix(data);
 
-    var svg = d3.select("body").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height/2 + ")");
-      // var mySVG = document.getElementById("svg");
-      // mySVG.setAttribute("width",  window.innerWidth);
-      // mySVG.setAttribute("height", window.innerHeight);
-
-    var chord = d3.layout.chord()
-            .padding(.05)
-            .matrix(m_1990);
-
-    var g = svg.append("g").selectAll("path")
-            .data(chord.groups)
-            .enter().append("path")
-            .style("fill", function(d) {return fill[d.index] })
-            //.style("stroke", function(d) { return fill[d.index]; })
-            .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
-            .on("mouseover", fade(.1))
-            .on("mouseout", fade(1));
-    g.selectAll("text")
-            .data(chord.groups)
-            .enter()
-            .append("text")
-            .each( function(d,i) {
-                d.angle = (d.startAngle + d.endAngle) / 2;
-                d.name = countries[i];
-            })
-            .attr("dy",".35em")
-            .attr("transform", function(d){
-                return "rotate(" + ( d.angle * 180 / Math.PI ) + ")" +
-                       "translate(0,"+ -1.0*(outerRadius+10) +")" +
-                        ( ( d.angle > Math.PI*3/4 && d.angle < Math.PI*5/4 ) ? "rotate(180)" : "");
-            })
-            .text(function(d){
-                return d.name;
-            });
-    function fade(opacity) {
-        return function(g, i) {
-            svg.selectAll(".chord path")
-                .filter(function(d) {
-                    return d.source.index != i && d.target.index != i;
+        var g = svg.append("g").selectAll("path")
+                .data(chord.groups)
+                .enter().append("path")
+                .style("fill", function(d) {return fill[d.index] })
+                //.style("stroke", function(d) { return fill[d.index]; })
+                .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
+                .on("mouseover", fade(.1))
+                .on("mouseout", fade(1));
+        g.selectAll("text")
+                .data(chord.groups)
+                .enter()
+                .append("text")
+                .each( function(d,i) {
+                    d.angle = (d.startAngle + d.endAngle) / 2;
+                    d.name = countries[i];
                 })
-                .transition()
-                .style("opacity", opacity);
-        };
-    }
+                .attr("dy",".35em")
+                .attr("transform", function(d){
+                    return "rotate(" + ( d.angle * 180 / Math.PI ) + ")" +
+                           "translate(0,"+ -1.0*(outerRadius+10) +")" +
+                            ( ( d.angle > Math.PI*3/4 && d.angle < Math.PI*5/4 ) ? "rotate(180)" : "");
+                })
+                .text(function(d){
+                    return d.name;
+                });
+        function fade(opacity) {
+            return function(g, i) {
+                svg.selectAll(".chord path")
+                    .filter(function(d) {
+                        return d.source.index != i && d.target.index != i;
+                    })
+                    .transition()
+                    .style("opacity", opacity);
+            };
+        }
 
-    svg.append("g")
-            .attr("class", "chord")
-            .selectAll("path")
-            .data(chord.chords)
-            .enter().append("path")
-            .attr("d", d3.svg.chord()
-              .radius(innerRadius))
-            .style("fill", function(d) {
-                return fill[d.target.index];
-            })
-            .style("opacity", 1);
+        svg.append("g")
+                .attr("class", "chord")
+                .selectAll("path")
+                .data(chord.chords)
+                .enter().append("path")
+                .attr("d", d3.svg.chord()
+                  .radius(innerRadius))
+                .style("fill", function(d) {
+                    return fill[d.target.index];
+                })
+                .style("opacity", 1);
+    }
+    // d3.json("data/region_flow.json", function(data){
+    //             draw_chord(data);
+    // });
+
+
+    const {ipcRenderer} = require('electron');
+    ipcRenderer.on('sendyear', (event, arg) => {
+        d3.json("data/region_flow.json", function(data){
+            var m = data["matrix"];
+            var r = data["regions"];
+            if (arg.year==1990){
+                d3.select("svg").remove(); 
+                draw_chord(m[0]["1990"],r);
+            }
+            if (arg.year==1995){
+                d3.select("svg").remove(); 
+                draw_chord(m[1]["1995"],r);
+            }
+            if (arg.year==2000){
+                d3.select("svg").remove(); 
+                draw_chord(m[2]["2000"],r);
+            }
+            if (arg.year==2005){
+                d3.select("svg").remove(); 
+                draw_chord(m[3]["2005"],r);
+            }
+        })
+    });
+
+
+    // window.onload = d3.json("data/region_flow.json", function(data){
+    //     console.log(data["matrix"]);
+    //     draw_chord(data["matrix"][0]["1990"],data["regions"]);
+    // });
       </script>
     </svg>
 

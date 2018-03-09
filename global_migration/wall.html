@@ -3,10 +3,66 @@
   <head>
     <meta charset="UTF-8">
     <script src="https://d3js.org/d3.v2.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
     <title>Global Flow</title>
   </head>
   <body>
-    <button>1990</button>
-    <button>2014</button>
+  	<style type="text/css">
+  		#btn{
+  			margin:0 auto;
+  			margin-top: 42vh;
+  			text-align: center;
+  		}
+  		button{
+  			font-size: 3rem;
+  			font-family: arial, sans-serif;
+  			font-weight: 900;
+  			padding:2rem 4rem;
+  			margin:1rem;
+  			background-color: #34495e;
+  			cursor:pointer;
+  			border-radius:6px;
+  			border: none;
+  			color:#fff;
+  		}
+  		button:hover{
+  			background-color: #2c3e50;
+  		}
+  	</style>
+  	<div id="btn">
+	  	<button id="1990">1990</button>
+	  	<button id="1995">1995</button>
+	  	<button id="2000">2000</button>
+	  	<button id="2005">2005</button>
+
+	</div>
+    <script type="text/javascript">
+    	const {ipcRenderer} = require('electron');
+    	document.getElementById("1990").addEventListener("click",()=>{
+    		let Data = {year: 1990};
+    		ipcRenderer.send('request change',Data);
+    	}, false);
+    	document.getElementById("1995").addEventListener("click",()=>{
+    		let Data = {year: 1995};
+    		ipcRenderer.send('request change',Data);
+    	}, false);
+        document.getElementById("2000").addEventListener("click",()=>{
+    		let Data = {year: 2000};
+    		ipcRenderer.send('request change',Data);
+    	}, false);
+    	document.getElementById("2005").addEventListener("click",()=>{
+    		let Data = {year: 2005};
+    		ipcRenderer.send('request change',Data);
+    	}, false);
+
+
+    	// $("input").click(function(e){
+    	// 	var btnid = e.target.id;
+    	// 	let Data = {
+    	// 		year: btnid;
+    	// 	}
+    	// 	ipcRenderer.send('button id',Data);
+    	// });
+    </script>
   </body>
 </html>

@@ -52,6 +52,10 @@ function createWindow () {
 
     floorWindow.setFullScreen(true);
     mainWindow.setFullScreen(true);
+
+  ipcMain.on('request change', (event, arg) => {
+    floorWindow.webContents.send('sendyear',arg);
+  });
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
