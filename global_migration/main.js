@@ -31,7 +31,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  mainWindow = new BrowserWindow({  frame:false, width: wallScreen.size.width, height: wallScreen.size.height})
+  mainWindow = new BrowserWindow({  frame:false, width: wallScreen.size.width, height: wallScreen.size.height, webPreferences:{nodeIntegration: true}})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -41,6 +41,7 @@ function createWindow () {
   }))
   console.log(floorScreen.size.height);
   console.log(floorScreen.size.width);
+  mainWindow.webContents.openDevTools()
 
   floorWindow = new BrowserWindow({ frame:false, x:  ((1920-1080)/2)-1920, y:0,width : 1080,height: 800})
 

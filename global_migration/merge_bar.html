@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+    <style type="text/css">
+      #btn{
+        margin:0 auto;
+        margin-top: 0;
+        text-align: center;
+      }
+      button{
+        font-size: 1rem;
+        font-family: arial, sans-serif;
+        font-weight: 10;
+        padding:1rem 2rem;
+        margin:1rem;
+        background-color: #34495e;
+        cursor:pointer;
+        border-radius:6px;
+        border: none;
+        color:#fff;
+      }
+      button:hover{
+        background-color: #2c3e50;
+      }
+      body {
+      font-weight: bolder;
+      font: 10px sans-serif;
+      background-color: #000
+    }
+    .y.axisRight text {
+        fill: orange;
+    }
+    .y.axisLeft text {
+        fill: steelblue;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    rect {
+      fill-opacity:.6;
+      fill: #1f77b4;
+    }
+    rect:first-child {
+  fill: #e377c2;
+}
+    .bar2 {
+      fill: orange;
+    }
+    .x.axis path {
+      display: none;
+    }
+    .x.axis text {
+  fill: #fff;
+}
+
+    </style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript">
+var margin = {top:80, right:80, bottom:80, left:80};
+var height = 800;
+var height_use = height/3*2;
+//var width = 6400;
+var width = 6400;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width],.1);
+
+var y = d3.scale.linear().domain([1,5000000]).range([height_use,0]);
+
+
+var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+var yAxisLeft = d3.svg.axis().scale(y).ticks(10).orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width+margin.left+margin.right)
+    .attr("height", height+margin.top+margin.bottom)
+  .append("g")
+    .attr("class", "graph")
+    .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+d3.csv("1990merge_flow.csv", function(data) {
+  console.log('here');
+  // Convert strings to numbers.
+  data.forEach(function(d) {
+    d.people = +d.people;
+
+  });
+
+  // Compute the extent of the data set in people.
+  var people0 = d3.min(data, function(d){return d.people;}),
+    people1 = d3.max(data, function(d){return d.people;});
+
+  x.domain(data.map(function(d){return d.country; }));
+  y.domain([0, d3.max(data, function(d){ return +d.people; })]);
+
+  svg.append("g")
+    .attr("class", "y axis axisLeft")
+    .attr("transform","translate(0,0)")
+    .call(yAxisLeft)
+    .append("text")
+    .attr("y", 6)
+    .attr("dy", "-2em")
+    .style("text-anchor","end")
+    .text("Total Out");
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0,"+(height_use)+")")
+    .call(xAxis)
+
+  bars = svg.selectAll(".bar").data(data).enter();
+  bars.append("rect")
+    // .attr("class","bar1")
+    //.attr("x",function(d){return x(d.country); })
+    .attr("x",function(d){return x(d.country); })
+    .attr("width",x.rangeBand())
+    .attr("y",function(d){return y(d.people); })
+    .attr("height", function(d){return height_use-y(d.people); });
+ 
+});
+</script>

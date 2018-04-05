@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <script src="https://d3js.org/d3.v2.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <title>Global Flow</title>
   </head>
@@ -29,7 +30,9 @@
   			background-color: #2c3e50;
   		}
   		body {
-		  font: 9px sans-serif;
+		  font: 10px sans-serif;
+      background-color: #000;
+      color:#fff;
 		}
 		.y.axisRight text {
 		    fill: orange;
@@ -40,15 +43,50 @@
 		.axis path,
 		.axis line {
 		  fill: none;
-		  stroke: #000;
+		  stroke: #fff;
 		  shape-rendering: crispEdges;
 		}
-		.bar1 {
+    .axis text {
+      fill: #fff;
+      font-size: 10px;
+    }
+/*		.bar1 {
 		  fill: steelblue;
-		}
+		}*/
 		.bar2 {
 		  fill: orange;
 		}
+    rect {
+      /*fill-opacity:.6;*/
+      fill: #1f77b4;
+    }
+.d3-tip {
+  font-size: 17px;
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #000;
+  border-radius: 2px;
+  background-color: #fff
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 17px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/*    rect.next(){
+      fill: #e377c2;
+    }*/
 		.x.axis path {
 		  display: none;
 		}
@@ -64,57 +102,166 @@
     	const {ipcRenderer} = require('electron');
     	document.getElementById("1990").addEventListener("click",()=>{
     		d3.select("svg").remove();
-    		d3.csv("1990flow.csv",function(data){
-    			draw_bar(data);
+    		d3.csv("1990merge_flow.csv",function(data){
+    			draw_merge_bar(data);
     		});
     		let Data = {year: 1990};
     		ipcRenderer.send('request change',Data);
     	}, false);
     	document.getElementById("1995").addEventListener("click",()=>{
     		d3.select("svg").remove();
-    		d3.csv("1995flow.csv",function(data){
-    			draw_bar(data);
+    		d3.csv("1995merge_flow.csv",function(data){
+    			draw_merge_bar(data);
     		});
     		let Data = {year: 1995};
     		ipcRenderer.send('request change',Data);
     	}, false);
         document.getElementById("2000").addEventListener("click",()=>{
         	d3.select("svg").remove();
-      		d3.csv("2000flow.csv",function(data){
-    			draw_bar(data);
+      		d3.csv("2000merge_flow.csv",function(data){
+    			draw_merge_bar(data);
     		});
     		let Data = {year: 2000};
     		ipcRenderer.send('request change',Data);
     	}, false);
     	document.getElementById("2005").addEventListener("click",()=>{
     		d3.select("svg").remove();
-     		d3.csv("2005flow.csv",function(data){
-    			draw_bar(data);
+     		d3.csv("2005merge_flow.csv",function(data){
+    			draw_merge_bar(data);
     		});
     		let Data = {year: 2005};
     		ipcRenderer.send('request change',Data);
     	}, false);
 
 
-    	// $("input").click(function(e){
-    	// 	var btnid = e.target.id;
-    	// 	let Data = {
-    	// 		year: btnid;
-    	// 	}
-    	// 	ipcRenderer.send('button id',Data);
-    	// });
-
-    	function draw_bar(data){
+      function draw_merge_bar(data){
         var margin = {top:80, right:80, bottom:80, left:80};
         var height = 800;
+        var height_use = height/3*2;
         //var width = 6400;
         var width = 6400;
 
         var x = d3.scale.ordinal()
             .rangeRoundBands([0, width],.1);
 
-        var y0 = d3.scale.linear().domain([1,5000000]).range([height,0]),
-        y1 = d3.scale.linear().domain([300,8000000]).range([height,0]);
+        var y = d3.scale.linear().domain([1,5000000]).range([height_use,0]);
+
+        var formatPercent = d3.format(".0%");
+
+        var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+        var yAxisLeft = d3.svg.axis().scale(y).ticks(10).orient("left").tickFormat(formatPercent);
+
+
+
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+          if (+d.type==1){
+            return "<strong>Country:</strong> <p style='color:red;font-size:15px;'>"+d.country+"</p>"+"<strong>In:</strong> <p style='color:red;font-size:15px;'>"+d.people+"</p>";
+          }
+          else{
+            return "<strong>Country:</strong> <p style='color:red;font-size:15px;'>"+d.country+"</p>"+"<strong>Out:</strong> <p style='color:red;font-size:15px;'>"+d.people+"</p>";
+          }
+        })
+
+        
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width+margin.left+margin.right)
+            .attr("height", height+margin.top+margin.bottom)
+          .append("g")
+            .attr("class", "graph")
+            .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+        svg.call(tip);
+        //d3.csv("1990merge_flow.csv", function(data) {
+          // Convert strings to numbers.
+          // data.forEach(function(d) {
+          //   d.people = +d.people;
+
+          // });
+
+          // Compute the extent of the data set in peope.
+          var peopel0 = d3.min(data, function(d){return d.people;}),
+            people1 = d3.max(data, function(d){return d.people;});
+
+          x.domain(data.map(function(d){return d.country; }));
+          y.domain([0, d3.max(data, function(d){ return +d.people; })]);
+
+          svg.append("g")
+            .attr("class", "y axis axisLeft")
+            .attr("transform","translate(0,0)")
+            .call(yAxisLeft)
+            .append("text")
+            .attr("y", 6)
+            .attr("dy", "-2em")
+            .style("text-anchor","end")
+            .text("Total Out");
+          svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,"+(height_use)+")")
+            .call(xAxis)
+
+          bars = svg.selectAll(".bar").data(data).enter();
+          bars.append("rect")
+            // .attr("class","bar1")
+            //.attr("x",function(d){return x(d.country); })
+            .attr("x",function(d){return x(d.country); })
+            .attr("width",x.rangeBand())
+            .attr("y",function(d){return y(d.people); })
+            .attr("height", function(d,i,j){return height_use-y(d.people); })
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+
+
+
+        function fade(opacity) {
+            if (opacity!=1){
+                function sendidx(idx){
+                    ipcRenderer.send('change hist',{index:idx});
+                }
+            }
+            return function(g, i) {
+                svg.selectAll(".chord path")
+                    .filter(function(d) {
+                        return d.source.index != i && d.target.index != i;
+                    })
+                    .transition()
+                    .style("opacity", opacity);
+            };
+        }
+          // d3.selectAll("rect").each(function(){
+          //   this.nextSibling.style.fill='orange';    
+          // })
+          d3.selectAll("rect")
+            .style("fill", function(d,i){
+            if (i%2 == 1) return 'orange';
+          });
+
+          // d3.selectAll("rect")
+          //   .on("mouseover",fade(.1));
+          // d3.selectAll("rect").style("fill-opacity", function(d,i){
+          //   if (i%2 == 1) return 0.6;
+          // });
+      };
+
+
+
+    	function draw_bar(data){
+        var margin = {top:80, right:80, bottom:80, left:80};
+        var height = 800;
+        var height_use = height/3*2;
+        //var width = 6400;
+        var width = 6400;
+
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width],.1);
+
+        var y0 = d3.scale.linear().domain([1,5000000]).range([height_use,0]),
+        y1 = d3.scale.linear().domain([300,8000000]).range([height_use,0]);
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -132,13 +279,12 @@
             .attr("class", "graph")
             .attr("transform", "translate("+margin.left+","+margin.top+")");
 
-        //d3.csv("2005flow.csv", type, function(error, data){
           x.domain(data.map(function(d){return d.Country; }));
           y0.domain([0, d3.max(data, function(d){ return +d.Go; })]);
 
           svg.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0,"+height+")")
+            .attr("transform", "translate(0,"+(height_use)+")")
             .call(xAxis)
           svg.append("g")
             .attr("class", "y axis axisLeft")
@@ -167,22 +313,25 @@
             .attr("x",function(d){return x(d.Country); })
             .attr("width",x.rangeBand()/2)
             .attr("y",function(d){return y0(d.Go); })
-              .attr("height", function(d,i,j){return height-y0(d.Go); });
+              .attr("height", function(d,i,j){return height_use-y0(d.Go); });
 
         bars.append("rect")
             .attr("class", "bar2")
             .attr("x", function(d) { return x(d.Country) + x.rangeBand()/2; })
             .attr("width", x.rangeBand() / 2)
             .attr("y", function(d) { return y1(d.Come); })
-          .attr("height", function(d,i,j) { return height - y1(d.Come); }); 
+          .attr("height", function(d,i,j) { return height_use - y1(d.Come); }); 
 
-        //});
     };
   function type(d) {
     d.Go = +d.Go;
     d.Come = +d.Come;
     return d;
   };
+
+  function cal(d){
+    return MATH.log(d);
+  }
 
     </script>
   </body>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font: 9px sans-serif;
+}
+.y.axisRight text {
+    fill: orange;
+}
+.y.axisLeft text {
+    fill: steelblue;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.bar1 {
+  fill: steelblue;
+}
+.bar2 {
+  fill: orange;
+}
+.x.axis path {
+  display: none;
+}
+</style>
+
+<body>
+  <script src="http://d3js.org/d3.v2.min.js"></script>
+  <script>
+    function draw_bar(data){
+        var margin = {top:80, right:80, bottom:80, left:80};
+        var height = 800;
+        //var width = 6400;
+        var width = 6400;
+
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width],.1);
+
+        var y0 = d3.scale.linear().domain([1,5000000]).range([height,0]),
+        y1 = d3.scale.linear().domain([300,8000000]).range([height,0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        //left y-axis
+        var yAxisLeft = d3.svg.axis().scale(y0).ticks(10).orient("left");
+        //right y-axis
+        var yAxisRight = d3.svg.axis().scale(y1).ticks(10).orient("right");
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width+margin.left+margin.right)
+            .attr("height", height+margin.top+margin.bottom)
+          .append("g")
+            .attr("class", "graph")
+            .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+        //d3.csv("2005flow.csv", type, function(error, data){
+          x.domain(data.map(function(d){return d.Country; }));
+          y0.domain([0, d3.max(data, function(d){ return d.Go; })]);
+
+          svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,"+height+")")
+            .call(xAxis)
+          svg.append("g")
+            .attr("class", "y axis axisLeft")
+            .attr("transform","translate(0,0)")
+            .call(yAxisLeft)
+            .append("text")
+            .attr("y", 6)
+            .attr("dy", "-2em")
+            .style("text-anchor","end")
+            .text("Total Out");
+          svg.append("g")
+            .attr("class", "y axis axisRight")
+            .attr("transform", "translate(" + (width) + ",0)")
+            .call(yAxisRight)
+          .append("text")
+            .attr("y", 6)
+            .attr("dy", "-2em")
+            .attr("dx", "2em")
+            .style("text-anchor", "end")
+            .text("Total In");
+
+          bars = svg.selectAll(".bar").data(data).enter();
+
+          bars.append("rect")
+            .attr("class","bar1")
+            .attr("x",function(d){return x(d.Country); })
+            .attr("width",x.rangeBand()/2)
+            .attr("y",function(d){return y0(d.Go); })
+              .attr("height", function(d,i,j){return height-y0(d.Go); });
+
+        bars.append("rect")
+            .attr("class", "bar2")
+            .attr("x", function(d) { return x(d.Country) + x.rangeBand()/2; })
+            .attr("width", x.rangeBand() / 2)
+            .attr("y", function(d) { return y1(d.Come); })
+          .attr("height", function(d,i,j) { return height - y1(d.Come); }); 
+
+        //});
+    };
+  function type(d) {
+    d.Go = +d.Go;
+    d.Come = +d.Come;
+    return d;
+  };
+  d3.csv("2005flow.csv",function(data){
+    draw_bar(data);
+  })
+  </script>

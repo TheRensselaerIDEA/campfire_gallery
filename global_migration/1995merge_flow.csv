@@ -1,0 +1,255 @@
+country,type,people
+Canada,1,9441799
+Canada,2,571562
+United States,1,1189608
+United States,2,257558
+Algeria,1,8267660
+Algeria,2,271276
+Angola,1,5582420
+Angola,2,246926
+Burkina Faso,1,20962
+Burkina Faso,2,536852
+Burundi,1,9936
+Burundi,2,854712
+Cameroon,1,144639
+Cameroon,2,51574
+Chad,1,27450
+Chad,2,3550
+DR Congo,1,28817
+DR Congo,2,2713690
+Egypt,1,68957
+Egypt,2,1864488
+Eritrea,1,12
+Eritrea,2,25476
+Ethiopia,1,7516
+Ethiopia,2,1304288
+Ghana,1,2030
+Ghana,2,157206
+Guinea,1,411432
+Guinea,2,618498
+Ivory Coast,1,9768
+Ivory Coast,2,489902
+Kenya,1,334517
+Kenya,2,296738
+Liberia,1,170615
+Liberia,2,0
+Libya,1,316701
+Libya,2,291282
+Malawi,1,217416
+Malawi,2,452524
+Mali,1,86062
+Mali,2,256904
+Morocco,1,134464
+Morocco,2,1004068
+Mozambique,1,2879
+Mozambique,2,45010
+Nigeria,1,64414
+Nigeria,2,386548
+Rwanda,1,89046
+Rwanda,2,0
+Senegal,1,1090567
+Senegal,2,262802
+Sierra Leone,1,733987
+Sierra Leone,2,412930
+Somalia,1,51140
+Somalia,2,327040
+South Africa,1,66366
+South Africa,2,150632
+South Sudan,1,151089
+South Sudan,2,0
+Sudan,1,499186
+Sudan,2,1392562
+Tanzania,1,79181
+Tanzania,2,745050
+Togo,1,166717
+Togo,2,6496
+Uganda,1,91452
+Uganda,2,738568
+Zambia,1,318010
+Zambia,2,192688
+Zimbabwe,1,196725
+Zimbabwe,2,394774
+Albania,1,5720
+Albania,2,551136
+Austria,1,1429431
+Austria,2,126866
+Belgium,1,4975042
+Belgium,2,86894
+Bosnia & Herzegovina,1,23811
+Bosnia & Herzegovina,2,0
+Bulgaria,1,136495
+Bulgaria,2,236668
+Croatia,1,138049
+Croatia,2,404742
+Czech Republic,1,207250
+Czech Republic,2,32084
+Denmark,1,12369
+Denmark,2,43146
+France,1,48044
+France,2,784388
+Germany,1,50086
+Germany,2,1344602
+Greece,1,418102
+Greece,2,66990
+Hungary,1,302762
+Hungary,2,42332
+Ireland,1,1633737
+Ireland,2,50336
+Italy,1,114940
+Italy,2,638020
+Netherlands,1,96727
+Netherlands,2,213188
+Norway,1,348050
+Norway,2,30942
+Poland,1,357852
+Poland,2,460384
+Portugal,1,177150
+Portugal,2,138358
+Romania,1,57519
+Romania,2,623140
+Serbia,1,215915
+Serbia,2,688644
+Spain,1,37704
+Spain,2,6470
+Sweden,1,163190
+Sweden,2,142990
+Switzerland,1,490897
+Switzerland,2,197398
+United Kingdom,1,348918
+United Kingdom,2,775356
+Armenia,1,180515
+Armenia,2,525448
+Azerbaijan,1,439114
+Azerbaijan,2,267780
+Belarus,1,440592
+Belarus,2,112068
+Georgia,1,2599277
+Georgia,2,765824
+Kazakhstan,1,39891
+Kazakhstan,2,2710852
+Kyrgyzstan,1,10742
+Kyrgyzstan,2,91006
+Latvia,1,49362
+Latvia,2,180288
+Lithuania,1,4568
+Lithuania,2,209526
+Moldova,1,39755
+Moldova,2,501142
+Russia,1,37076
+Russia,2,78414
+Tajikistan,1,29537
+Tajikistan,2,663552
+Ukraine,1,157
+Ukraine,2,1541794
+Uzbekistan,1,1397493
+Uzbekistan,2,824970
+Iraq,1,776369
+Iraq,2,149608
+Israel,1,154497
+Israel,2,40410
+Jordan,1,94968
+Jordan,2,587726
+Kuwait,1,901190
+Kuwait,2,146612
+Lebanon,1,811755
+Lebanon,2,271692
+Oman,1,243845
+Oman,2,456166
+Palestine,1,148454
+Palestine,2,68100
+Qatar,1,108627
+Qatar,2,29404
+Saudi Arabia,1,213164
+Saudi Arabia,2,1979512
+Syria,1,29318
+Syria,2,257312
+Turkey,1,86800
+Turkey,2,476794
+United Arab Emirates,1,51453
+United Arab Emirates,2,102762
+Yemen,1,155929
+Yemen,2,202478
+Afghanistan,1,168
+Afghanistan,2,778780
+Bangladesh,1,103517
+Bangladesh,2,2111960
+India,1,351136
+India,2,2323292
+Iran,1,176847
+Iran,2,111524
+Nepal,1,285971
+Nepal,2,445994
+Pakistan,1,1719719
+Pakistan,2,1106406
+Sri Lanka,1,60582
+Sri Lanka,2,786264
+China,1,528650
+China,2,1763804
+Hong Kong,1,611073
+Hong Kong,2,4824
+Japan,1,404905
+Japan,2,452220
+South Korea,1,384496
+South Korea,2,1161916
+Brunei,1,512
+Brunei,2,18952
+Cambodia,1,122831
+Cambodia,2,0
+Indonesia,1,845848
+Indonesia,2,1807568
+Malaysia,1,474242
+Malaysia,2,487738
+Myanmar,1,231965
+Myanmar,2,72754
+Philippines,1,209608
+Philippines,2,1662684
+Singapore,1,805131
+Singapore,2,106756
+Thailand,1,915933
+Thailand,2,2546
+Vietnam,1,46596
+Vietnam,2,615030
+Australia,1,55504
+Australia,2,234528
+New Zealand,1,587226
+New Zealand,2,153196
+Argentina,1,116840
+Argentina,2,427546
+Bolivia,1,46552
+Bolivia,2,229392
+Brazil,1,308507
+Brazil,2,373240
+Chile,1,487967
+Chile,2,2458
+Colombia,1,37963
+Colombia,2,328832
+Costa Rica,1,575867
+Costa Rica,2,39238
+Cuba,1,557792
+Cuba,2,311694
+Dominican Republic,1,167291
+Dominican Republic,2,395776
+Ecuador,1,305054
+Ecuador,2,503310
+El Salvador,1,616883
+El Salvador,2,798716
+Guatemala,1,165666
+Guatemala,2,771958
+Haiti,1,65424
+Haiti,2,274678
+Honduras,1,42450
+Honduras,2,366206
+Jamaica,1,40160
+Jamaica,2,156054
+Mexico,1,17447
+Mexico,2,3063466
+Nicaragua,1,138520
+Nicaragua,2,314396
+Paraguay,1,20600
+Paraguay,2,119856
+Peru,1,39800
+Peru,2,699636
+Puerto Rico,1,1751
+Puerto Rico,2,183464
+Venezuela,1,642
+Venezuela,2,132172
