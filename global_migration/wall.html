@@ -50,14 +50,10 @@
       fill: #fff;
       font-size: 10px;
     }
-/*		.bar1 {
-		  fill: steelblue;
-		}*/
 		.bar2 {
 		  fill: orange;
 		}
     rect {
-      /*fill-opacity:.6;*/
       fill: #1f77b4;
     }
 .d3-tip {
@@ -84,9 +80,6 @@
   text-align: center;
 }
 
-/*    rect.next(){
-      fill: #e377c2;
-    }*/
 		.x.axis path {
 		  display: none;
 		}
@@ -138,7 +131,6 @@
         var margin = {top:80, right:80, bottom:80, left:80};
         var height = 800;
         var height_use = height/3*2;
-        //var width = 6400;
         var width = 6400;
 
         var x = d3.scale.ordinal()
@@ -177,13 +169,6 @@
             .attr("transform", "translate("+margin.left+","+margin.top+")");
 
         svg.call(tip);
-        //d3.csv("1990merge_flow.csv", function(data) {
-          // Convert strings to numbers.
-          // data.forEach(function(d) {
-          //   d.people = +d.people;
-
-          // });
-
           // Compute the extent of the data set in peope.
           var peopel0 = d3.min(data, function(d){return d.people;}),
             people1 = d3.max(data, function(d){return d.people;});
@@ -233,19 +218,10 @@
                     .style("opacity", opacity);
             };
         }
-          // d3.selectAll("rect").each(function(){
-          //   this.nextSibling.style.fill='orange';    
-          // })
           d3.selectAll("rect")
             .style("fill", function(d,i){
             if (i%2 == 1) return 'orange';
           });
-
-          // d3.selectAll("rect")
-          //   .on("mouseover",fade(.1));
-          // d3.selectAll("rect").style("fill-opacity", function(d,i){
-          //   if (i%2 == 1) return 0.6;
-          // });
       };
 
 
@@ -254,7 +230,6 @@
         var margin = {top:80, right:80, bottom:80, left:80};
         var height = 800;
         var height_use = height/3*2;
-        //var width = 6400;
         var width = 6400;
 
         var x = d3.scale.ordinal()
